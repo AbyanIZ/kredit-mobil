@@ -5,8 +5,12 @@ use App\Http\Controllers\Web\UserManagementController;
 use App\Http\Controllers\Web\PendataanMobilController;
 use App\Http\Controllers\Web\LaporanMobilController;
 use App\Http\Controllers\Web\KreditMobilController;
+use App\Http\Controllers\Web\MerkController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
@@ -37,3 +41,7 @@ Route::get('/laporan-mobil/export', [LaporanMobilController::class, 'export'])->
 Route::get('kredit-mobil', [KreditMobilController::class, 'index'])->name('kreditmobil.index');
 Route::get('kredit-mobil/{id}', [KreditMobilController::class, 'show'])->name('kreditmobil.show');
 Route::post('kredit-mobil/{id}/update-status', [KreditMobilController::class, 'updateStatus'])->name('kreditmobil.updateStatus');
+
+Route::get('/dashboard', [App\Http\Controllers\Web\DashboardController::class, 'index'])->name('dashboard');
+
+Route::resource('merek', MerkController::class);

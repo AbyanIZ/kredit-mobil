@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Models\Merk;
 use Illuminate\Support\Facades\Validator;
@@ -36,7 +35,7 @@ class MerkController extends Controller
         }
 
         if ($validator->fails()) {
-            return MerkResource::collection($validator->errors(), 422);
+            return response()->json($validator->errors(), 422);
         }
 
         $merk = Merk::create([
@@ -61,13 +60,13 @@ class MerkController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $validator = Validator::make([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ], $request->all());
+        ]);
 
         if ($validator->fails()) {
-            return MerkResource::collection($validator->errors(), 422);
+            return response()->json($validator->errors(), 422);
         }
 
         $merk = Merk::findOrFail($id);
@@ -88,8 +87,6 @@ class MerkController extends Controller
         $merk = Merk::findOrFail($id);
         $merk->delete();
 
-        return MerkResource::collection([
-            'message' => 'Merk deleted successfully',
-        ], 200);
+        return response()->json(['message' => 'Merk deleted successfully'], 200);
     }
 }
