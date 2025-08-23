@@ -51,13 +51,17 @@ class KreditMobilController extends Controller
         $ktpPath = $request->file('foto_ktp')->store('uploads/ktp', 'public');
         $kkPath = $request->file('foto_kk')->store('uploads/kk', 'public');
 
+        // Hitung tanggal kredit & jatuh tempo
+        $tanggalKredit = now();
+        $jatohTempo = now()->addMonth();
+
         // Buat kredit dengan status pending
         $kredit = KreditMobil::create([
             'mobil_id' => $mobil->id,
             'user_id' => $validated['user_id'],
             'nama' => $validated['nama'],
-            'tanggal_kredit' => now(),
-            'bunga' => 10.00,
+            'tanggal_kredit' => $tanggalKredit,
+            'jatoh_tempo' => $jatohTempo, // ⬅️ auto set 1 bulan
             'dp' => $validated['dp'],
             'metode_pembayaran' => $validated['metode_pembayaran'],
             'foto_ktp' => $ktpPath,
@@ -70,6 +74,7 @@ class KreditMobilController extends Controller
             'data_baru' => $kredit
         ], 201);
     }
+
 
     public function updateStatus(Request $request, $id)
     {

@@ -1,22 +1,71 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Detail Kredit Mobil</title>
     <style>
-        body { font-family: Arial, sans-serif; padding:20px; }
-        img { max-width:300px; margin:10px 0; border-radius:6px; }
-        .btn { padding:8px 16px; margin-right:8px; border:none; border-radius:4px; cursor:pointer; }
-        .btn-success { background:green; color:#fff; }
-        .btn-danger { background:red; color:#fff; }
-        .btn-back { background:#555; color:#fff; text-decoration:none; display:inline-block; }
-        .badge { padding:4px 8px; border-radius:4px; color:#fff; }
-        .badge-pending { background:orange; }
-        .badge-done { background:green; }
-        .badge-reject { background:red; }
-        .status-message { margin-top:15px; font-weight:bold; }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        img {
+            max-width: 300px;
+            margin: 10px 0;
+            border-radius: 6px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            margin-right: 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-success {
+            background: green;
+            color: #fff;
+        }
+
+        .btn-danger {
+            background: red;
+            color: #fff;
+        }
+
+        .btn-back {
+            background: #555;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #fff;
+        }
+
+        .badge-pending {
+            background: orange;
+        }
+
+        .badge-done {
+            background: green;
+        }
+
+        .badge-reject {
+            background: red;
+        }
+
+        .status-message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
     <h2>Detail Kredit Mobil</h2>
 
@@ -37,25 +86,27 @@
     </p>
 
     <h3>Foto Dokumen</h3>
-    @if($kredit->foto_ktp)
+    @if ($kredit->foto_ktp)
         <p>KTP:</p>
         <img src="{{ asset('storage/' . $kredit->foto_ktp) }}" alt="Foto KTP">
     @endif
-    @if($kredit->foto_kk)
+    @if ($kredit->foto_kk)
         <p>KK:</p>
         <img src="{{ asset('storage/' . $kredit->foto_kk) }}" alt="Foto KK">
     @endif
 
     <h3>Data Mobil</h3>
-    @if($kredit->mobil)
+    @if ($kredit->mobil)
         <p><strong>Nama Mobil:</strong> {{ $kredit->mobil->name }}</p>
-        <p><strong>Merk:</strong> {{ $kredit->mobil->merk->nama ?? '-' }}</p>
-        <p><strong>Tipe:</strong> {{ $kredit->mobil->tipe->nama ?? '-' }}</p>
+        <p><strong>Merk:</strong> {{ $kredit->mobil->merk->name ?? '-' }}</p>
+        <p><strong>Tipe:</strong> {{ $kredit->mobil->tipe->name ?? '-' }}</p>
+        <p><strong>Tanggal Kredit:</strong> {{ \Carbon\Carbon::parse($kredit->tanggal_kredit)->translatedFormat('d F Y') }}</p>
+        <p><strong>Jatuh Tempo:</strong> {{ \Carbon\Carbon::parse($kredit->jatuh_tempo)->translatedFormat('d F Y') }}</p>
         <p><strong>No. Plat:</strong> {{ $kredit->mobil->no_plat }}</p>
         <p><strong>Tahun:</strong> {{ $kredit->mobil->tahun }}</p>
         <p><strong>Harga:</strong> Rp {{ number_format($kredit->mobil->harga, 0, ',', '.') }}</p>
 
-        @if($kredit->mobil->image)
+        @if ($kredit->mobil->image)
             <img src="{{ asset('storage/' . $kredit->mobil->image) }}" alt="Mobil">
         @endif
     @else
@@ -63,7 +114,7 @@
     @endif
 
     {{-- Form Update Status --}}
-    @if($status === 'pending')
+    @if ($status === 'pending')
         <form action="{{ route('kreditmobil.updateStatus', $kredit->id) }}" method="POST">
             @csrf
             <button type="submit" name="status" value="done" class="btn btn-success">Done</button>
@@ -71,7 +122,7 @@
         </form>
     @else
         <div class="status-message">
-            @if($status === 'done')
+            @if ($status === 'done')
                 ✅ Kredit sudah disetujui.
             @elseif($status === 'reject')
                 ❌ Kredit ditolak.
@@ -83,4 +134,5 @@
     {{-- Tombol Back --}}
     <a href="{{ route('kreditmobil.index') }}" class="btn btn-back">⬅ Back </a>
 </body>
+
 </html>

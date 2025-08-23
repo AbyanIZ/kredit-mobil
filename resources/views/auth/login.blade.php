@@ -5,24 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Admin | Sitoko</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
         }
         .video-container {
             position: relative;
             width: 100%;
             height: 100%;
             overflow: hidden;
-            border-radius: 1rem 0 0 1rem;
+            border-radius: 1.5rem 0 0 1.5rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
         .video-container video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transform: scale(1.02);
+            transform: scale(1.03);
+            filter: brightness(0.95);
         }
         .video-overlay {
             position: absolute;
@@ -30,75 +33,81 @@
             left: 0;
             width: 100%;
             height: 100%;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.2), rgba(30, 64, 175, 0.3));
         }
         .form-container {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 1.5rem;
+            background: white;
         }
         .form-container:hover {
             transform: translateY(-5px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
         .input-field {
             transition: all 0.3s ease;
             box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            border-radius: 0.75rem;
         }
         .input-field:focus {
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
         }
         .login-btn {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
+            border-radius: 0.75rem;
         }
         .login-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 8px 15px rgba(59, 130, 246, 0.3);
         }
         .login-btn:active {
             transform: translateY(0);
         }
         .brand-logo {
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
         }
         @media (max-width: 768px) {
             .video-container {
-                height: 30vh;
-                border-radius: 1rem 1rem 0 0;
+                height: 35vh;
+                border-radius: 1.5rem 1.5rem 0 0;
             }
             .form-container {
-                border-radius: 0 0 1rem 1rem;
+                border-radius: 0 0 1.5rem 1.5rem;
             }
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-6xl mx-auto flex flex-col md:flex-row h-[90vh] md:h-[80vh] rounded-2xl overflow-hidden">
+<body class="min-h-screen flex items-center justify-center p-4 md:p-6">
+    <div class="w-full max-w-7xl mx-auto flex flex-col md:flex-row h-[90vh] md:h-[85vh] rounded-2xl overflow-hidden">
         <div class="md:w-1/2 w-full video-container">
             <video autoplay muted loop class="w-full h-full">
                 <source src="https://cdn.pixabay.com/video/2023/09/21/181533-866999835_large.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             <div class="video-overlay"></div>
-            <div class="absolute top-8 left-8">
-                <div class="flex items-center space-x-2">
-                    <svg class="w-8 h-8 text-white brand-logo" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="absolute top-10 left-10">
+                <div class="flex items-center space-x-3">
+                    <svg class="w-9 h-9 text-white brand-logo" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                     </svg>
-                    <span class="text-white font-bold text-xl">Sitoko</span>
+                    <span class="text-white font-semibold text-2xl">Sitoko</span>
                 </div>
             </div>
-            <div class="absolute bottom-8 left-8 text-white">
-                <h2 class="text-3xl font-bold mb-2">Welcome Back!</h2>
+            <div class="absolute bottom-10 left-10 text-white">
+                <h2 class="text-4xl font-bold mb-3">Welcome Back!</h2>
                 <p class="text-lg opacity-90">Streamline your business with our powerful admin tools</p>
             </div>
         </div>
 
         <div class="md:w-1/2 w-full bg-white p-8 md:p-12 flex items-center justify-center">
-            <div class="w-full max-w-sm form-container bg-white p-8 rounded-xl">
-                <div class="text-center mb-8">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Admin Login</h1>
-                    <p class="text-gray-500">Enter your credentials to access the dashboard</p>
+            <div class="w-full max-w-md form-container p-10">
+                <div class="text-center mb-10">
+                    <h1 class="text-3xl font-semibold text-gray-900 mb-2">Admin Login</h1>
+                    <p class="text-gray-600 text-sm">Enter your credentials to access the dashboard</p>
                 </div>
 
                 <div id="error-message" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6 text-sm"></div>
@@ -106,8 +115,8 @@
                 <form id="login-form" action="/login" method="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                    <div class="mb-5">
-                        <label for="email" class="block mb-2 text-sm font-medium text-gray-600">Email Address</label>
+                    <div class="mb-6">
+                        <label for="email" class="block mb-2 text-sm font-medium text-gray-700">Email Address</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,14 +124,14 @@
                                 </svg>
                             </div>
                             <input type="email" name="email" id="email"
-                                   class="w-full pl-10 pr-4 py-3 input-field bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 transition"
+                                   class="w-full pl-10 pr-4 py-3.5 input-field bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                                    placeholder="admin@example.com"
                                    required>
                         </div>
                     </div>
 
-                    <div class="mb-6">
-                        <label for="password" class="block mb-2 text-sm font-medium text-gray-600">Password</label>
+                    <div class="mb-8">
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-700">Password</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,7 +139,7 @@
                                 </svg>
                             </div>
                             <input type="password" name="password" id="password"
-                                   class="w-full pl-10 pr-10 py-3 input-field bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 transition"
+                                   class="w-full pl-10 pr-10 py-3.5 input-field bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                                    placeholder="••••••••"
                                    required>
                             <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 transition">
@@ -143,7 +152,7 @@
                     </div>
 
                     <button type="submit" id="submit-button"
-                            class="w-full login-btn text-white py-3 rounded-lg font-semibold flex items-center justify-center">
+                            class="w-full login-btn text-white py-3.5 rounded-lg font-semibold flex items-center justify-center">
                         <span id="button-text">Login</span>
                         <svg id="loading-spinner" class="hidden h-5 w-5 animate-spin text-white ml-2" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

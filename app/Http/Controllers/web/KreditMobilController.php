@@ -26,13 +26,14 @@ class KreditMobilController extends Controller
 
         if ($request->status === 'done') {
             $kredit->status = 'done';
-            // update status mobil juga
+            $kredit->payment_status  = 'paid';
             $mobil = $kredit->mobil;
             $mobil->status = 'not_available';
             $mobil->save();
         } elseif ($request->status === 'reject') {
-            $kredit->status = 'rejected';
+            $kredit->status = 'reject';
         }
+
 
         $kredit->save();
 
