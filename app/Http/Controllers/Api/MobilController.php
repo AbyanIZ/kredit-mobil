@@ -58,7 +58,6 @@ class MobilController extends Controller
             'deskripsi' => $request->deskripsi,
             'tanggal_masuk' => $request->tanggal_masuk,
             'tanggal_keluar' => $request->tanggal_keluar,
-            'no_plat' => $request->no_plat,
             'warna' => $request->warna,
             'tahun' => $request->tahun,
         ]);

@@ -31,7 +31,6 @@ class PendataanMobilController extends Controller
             'merk_id' => 'required|exists:merks,id',
             'tipe_id' => 'required|exists:tipes,id',
             'harga' => 'required|numeric',
-            'no_plat' => 'required|string|max:20',
             'tahun' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpg,jpeg,png',
         ]);
@@ -68,7 +67,6 @@ class PendataanMobilController extends Controller
             'merk_id' => 'required|exists:merks,id',
             'tipe_id' => 'required|exists:tipes,id',
             'harga' => 'required|numeric',
-            'no_plat' => 'required|string|max:20',
             'tahun' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);

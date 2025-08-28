@@ -16,7 +16,7 @@ class KreditMobil extends Model
         'user_id',
         'nama',
         'tanggal_kredit',
-        'jatoh_tempo', // ⬅️ auto set 1 bulan
+        'jatoh_tempo',
         'dp',
         'metode_pembayaran',
         'foto_ktp',

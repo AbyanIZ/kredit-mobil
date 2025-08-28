@@ -53,7 +53,8 @@ class KreditMobilController extends Controller
 
         // Hitung tanggal kredit & jatuh tempo
         $tanggalKredit = now();
-        $jatohTempo = now()->addMonth();
+        $jatohTempo = $tanggalKredit->copy()->addMonthNoOverflow();
+        // ⬅️ Jatuh tempo tiap bulan sesuai tanggal kredit
 
         // Buat kredit dengan status pending
         $kredit = KreditMobil::create([
@@ -61,7 +62,7 @@ class KreditMobilController extends Controller
             'user_id' => $validated['user_id'],
             'nama' => $validated['nama'],
             'tanggal_kredit' => $tanggalKredit,
-            'jatoh_tempo' => $jatohTempo, // ⬅️ auto set 1 bulan
+            'jatoh_tempo' => $jatohTempo,
             'dp' => $validated['dp'],
             'metode_pembayaran' => $validated['metode_pembayaran'],
             'foto_ktp' => $ktpPath,
@@ -74,7 +75,6 @@ class KreditMobilController extends Controller
             'data_baru' => $kredit
         ], 201);
     }
-
 
     public function updateStatus(Request $request, $id)
     {

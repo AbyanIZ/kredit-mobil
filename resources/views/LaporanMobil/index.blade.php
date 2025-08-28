@@ -48,10 +48,13 @@
         th {
             background: #f2f2f2;
         }
-        .logo {
-            display: block;
-            margin: 0 auto;
-            width: 100px;
+        .status-available {
+            color: green;
+            font-weight: bold;
+        }
+        .status-unavailable {
+            color: red;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -61,7 +64,6 @@
 
     <div class="header">
         <a href="{{ url()->previous() }}" class="btn btn-back">⬅️ Back</a>
-
         <a href="{{ route('laporan.mobil.export') }}" class="btn">📥 Download Excel</a>
     </div>
 
@@ -73,7 +75,7 @@
                 <th>Merk</th>
                 <th>Tipe</th>
                 <th>Harga</th>
-                <th>No Plat</th>
+                <th>Status</th>
                 <th>Tahun</th>
             </tr>
         </thead>
@@ -85,7 +87,13 @@
                     <td>{{ $mobil->merk->name ?? '-' }}</td>
                     <td>{{ $mobil->tipe->name ?? '-' }}</td>
                     <td>Rp {{ number_format($mobil->harga, 0, ',', '.') }}</td>
-                    <td>{{ $mobil->no_plat }}</td>
+                    <td>
+                        @if ($mobil->status === 'available')
+                            <span class="status-available">Available</span>
+                        @else
+                            <span class="status-unavailable">Unavailable</span>
+                        @endif
+                    </td>
                     <td>{{ $mobil->tahun }}</td>
                 </tr>
             @empty

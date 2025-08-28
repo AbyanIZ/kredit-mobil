@@ -68,9 +68,6 @@
         <label for="harga">Harga</label>
         <input type="number" id="harga" name="harga" required>
 
-        <label for="no_plat">No Plat</label>
-        <input type="text" id="no_plat" name="no_plat" required>
-
         <label for="tahun">Tahun</label>
         <input type="number" id="tahun" name="tahun" required>
 

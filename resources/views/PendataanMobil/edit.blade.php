@@ -97,9 +97,6 @@
         <label>Harga</label>
         <input type="number" name="harga" value="{{ old('harga', $mobil->harga) }}" required>
 
-        <label>No. Plat</label>
-        <input type="text" name="no_plat" value="{{ old('no_plat', $mobil->no_plat) }}" required>
-
         <label>Tahun</label>
         <input type="number" name="tahun" value="{{ old('tahun', $mobil->tahun) }}" required>
 

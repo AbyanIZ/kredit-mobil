@@ -102,7 +102,6 @@
         <p><strong>Tipe:</strong> {{ $kredit->mobil->tipe->name ?? '-' }}</p>
         <p><strong>Tanggal Kredit:</strong> {{ \Carbon\Carbon::parse($kredit->tanggal_kredit)->translatedFormat('d F Y') }}</p>
         <p><strong>Jatuh Tempo:</strong> {{ \Carbon\Carbon::parse($kredit->jatuh_tempo)->translatedFormat('d F Y') }}</p>
-        <p><strong>No. Plat:</strong> {{ $kredit->mobil->no_plat }}</p>
         <p><strong>Tahun:</strong> {{ $kredit->mobil->tahun }}</p>
         <p><strong>Harga:</strong> Rp {{ number_format($kredit->mobil->harga, 0, ',', '.') }}</p>
 

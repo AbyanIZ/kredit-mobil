@@ -14,7 +14,6 @@ class Mobil extends Model
         'merk_id',
         'tipe_id',
         'harga',
-        'no_plat',
         'tahun',
         'image',
         'status',

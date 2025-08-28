@@ -118,7 +118,6 @@
                 <th>Tipe</th>
                 <th>Harga</th>
                 <th>Status</th>
-                <th>No Plat</th>
                 <th>Tahun</th>
                 <th>Aksi</th>
             </tr>
@@ -146,7 +145,6 @@
                             <span style="color: red; font-weight: bold;">Unavailable</span>
                         @endif
                     </td>
-                    <td>{{ $mobil->no_plat }}</td>
                     <td>{{ $mobil->tahun }}</td>
                     <td>
                         <div class="btn-group">

@@ -18,11 +18,10 @@ return new class extends Migration
             $table->foreignId('tipe_id')->constrained('tipes')->onDelete('cascade');
             $table->string('image')->nullable();
             $table->integer('harga');
-            $table->text('deskripsi')->nullable();  
+            $table->text('deskripsi')->nullable();
             $table->enum('status', ['available', 'not_available'])->default('available');
             $table->date('tanggal_masuk')->nullable();
             $table->date('tanggal_keluar')->nullable();
-            $table->string('no_plat')->nullable();
             $table->string('warna')->nullable();
             $table->string('tahun')->nullable();
             $table->timestamps();
