@@ -181,64 +181,144 @@
         .fade-in {
             animation: fadeIn 0.6s ease-out;
         }
+
+        /* Skeleton Loading Styles */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s ease-in-out infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .skeleton-header {
+            height: 40px;
+            width: 60%;
+            margin-bottom: 1rem;
+        }
+
+        .skeleton-button {
+            height: 40px;
+            width: 150px;
+            border-radius: 8px;
+        }
+
+        .skeleton-table-header {
+            height: 48px;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .skeleton-table-row {
+            height: 56px;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body class="main-container">
-    <div class="page-header">
-        <div class="page-title">
-            <h1>Daftar Merek</h1>
-            <p class="page-subtitle">Kelola daftar merek mobil dalam sistem</p>
+    <div id="skeleton-loader">
+        <div class="page-header">
+            <div class="page-title">
+                <div class="skeleton skeleton-header"></div>
+                <div class="skeleton" style="height: 20px; width: 40%;"></div>
+            </div>
+            <div class="flex space-x-3">
+                <div class="skeleton skeleton-button"></div>
+                <div class="skeleton skeleton-button"></div>
+            </div>
         </div>
-        <div class="flex space-x-3">
-            <a href="{{ route('dashboard') }}" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
-                Kembali
-            </a>
-            <a href="{{ route('merek.create') }}" class="add-btn">
-                <i class="fas fa-plus"></i>
-                Tambah Merek
-            </a>
+
+        <div class="card">
+            <div class="table-container">
+                <div class="skeleton skeleton-table-header"></div>
+                <div class="skeleton skeleton-table-row"></div>
+                <div class="skeleton skeleton-table-row"></div>
+                <div class="skeleton skeleton-table-row"></div>
+            </div>
         </div>
     </div>
 
-    <div class="card fade-in">
-        <div class="table-container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="p-3">No</th>
-                        <th class="p-3">Nama Merek</th>
-                        <th class="p-3">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($mereks as $index => $merek)
-                    <tr>
-                        <td class="p-3">{{ $index + 1 }}</td>
-                        <td class="p-3">{{ $merek->name }}</td>
-                        <td class="p-3 flex space-x-2">
-                            <a href="{{ route('merek.edit', $merek->id) }}" class="edit-btn">
-                                <i class="fas fa-edit"></i>
-                                Edit
-                            </a>
-                            <form action="{{ route('merek.destroy', $merek->id) }}" method="POST" onsubmit="return confirm('Yakin hapus merek ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="delete-btn">
-                                    <i class="fas fa-trash"></i>
-                                    Hapus
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="3" class="p-3 text-center text-gray-500">Belum ada data merek.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+    <div id="main-content" class="hidden">
+        <div class="page-header">
+            <div class="page-title">
+                <h1>Daftar Merek</h1>
+                <p class="page-subtitle">Kelola daftar merek mobil dalam sistem</p>
+            </div>
+            <div class="flex space-x-3">
+                <a href="{{ route('dashboard') }}" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Kembali
+                </a>
+                <a href="{{ route('merek.create') }}" class="add-btn">
+                    <i class="fas fa-plus"></i>
+                    Tambah Merek
+                </a>
+            </div>
+        </div>
+
+        <div class="card fade-in">
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="p-3">No</th>
+                            <th class="p-3">Nama Merek</th>
+                            <th class="p-3">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($mereks as $index => $merek)
+                        <tr>
+                            <td class="p-3">{{ $index + 1 }}</td>
+                            <td class="p-3">{{ $merek->name }}</td>
+                            <td class="p-3 flex space-x-2">
+                                <a href="{{ route('merek.edit', $merek->id) }}" class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                    Edit
+                                </a>
+                                <form action="{{ route('merek.destroy', $merek->id) }}" method="POST" onsubmit="return confirm('Yakin hapus merek ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="delete-btn">
+                                        <i class="fas fa-trash"></i>
+                                        Hapus
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="p-3 text-center text-gray-500">Belum ada data merek.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const skeletonLoader = document.getElementById('skeleton-loader');
+            const mainContent = document.getElementById('main-content');
+            setTimeout(() => {
+                skeletonLoader.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+            }, 1000);
+        });
+    </script>
 </body>
 </html>

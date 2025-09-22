@@ -220,6 +220,49 @@
         .fade-in {
             animation: fadeIn 0.6s ease-out;
         }
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s ease-in-out infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .skeleton-header {
+            height: 40px;
+            width: 60%;
+            margin-bottom: 0.5rem;
+        }
+
+        .skeleton-button {
+            height: 40px;
+            width: 150px;
+            border-radius: 8px;
+        }
+
+        .skeleton-table-header {
+            height: 48px;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .skeleton-table-row {
+            height: 56px;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .hidden {
+            display: none;
+        }
 
         @media (max-width: 768px) {
             .page-title h1 {
@@ -247,82 +290,118 @@
     </style>
 </head>
 <body class="main-container">
-    <div class="page-header">
-        <div class="page-title flex items-center">
-            <div class="header-icon">
-                <i class="fas fa-car"></i>
+    <div id="skeleton-loader">
+        <div class="page-header">
+            <div class="page-title flex items-center">
+                <div class="skeleton" style="width: 3rem; height: 3rem; border-radius: 50%;"></div>
+                <div class="ml-4">
+                    <div class="skeleton skeleton-header"></div>
+                    <div class="skeleton" style="height: 20px; width: 40%;"></div>
+                </div>
             </div>
-            <div>
-                <h1>Laporan Mobil</h1>
-                <p class="page-subtitle">Daftar mobil yang tersedia dan tidak tersedia</p>
+            <div class="action-buttons">
+                <div class="skeleton skeleton-button"></div>
+                <div class="skeleton skeleton-button"></div>
             </div>
         </div>
-        <div class="action-buttons">
-            <a href="{{ url()->previous() }}" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
-                Kembali
-            </a>
-            <a href="{{ route('laporan.mobil.export') }}" class="export-btn">
-                <i class="fas fa-download"></i>
-                Download Excel
-            </a>
+
+        <div class="card">
+            <div class="table-container">
+                <div class="skeleton skeleton-table-header"></div>
+                <div class="skeleton skeleton-table-row"></div>
+                <div class="skeleton skeleton-table-row"></div>
+                <div class="skeleton skeleton-table-row"></div>
+            </div>
         </div>
     </div>
 
-    <div class="card fade-in">
-        <div class="table-container">
-            @if ($mobils->count() > 0)
-                <table>
-                    <thead class="table-header">
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Mobil</th>
-                            <th>Merk</th>
-                            <th>Tipe</th>
-                            <th>Harga</th>
-                            <th>Status</th>
-                            <th>Tahun</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($mobils as $mobil)
-                            <tr class="table-row">
-                                <td class="table-cell">{{ $mobil->id }}</td>
-                                <td class="table-cell">{{ $mobil->name }}</td>
-                                <td class="table-cell">{{ $mobil->merk->name ?? '-' }}</td>
-                                <td class="table-cell">{{ $mobil->tipe->name ?? '-' }}</td>
-                                <td class="table-cell">
-                                    <span class="price-display">Rp {{ number_format($mobil->harga, 0, ',', '.') }}</span>
-                                </td>
-                                <td class="table-cell">
-                                    @if ($mobil->status === 'available')
-                                        <span class="status-available">
-                                            <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
-                                            Tersedia
-                                        </span>
-                                    @else
-                                        <span class="status-unavailable">
-                                            <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
-                                            Tidak Tersedia
-                                        </span>
-                                    @endif
-                                </td>
-                                <td class="table-cell">{{ $mobil->tahun }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @else
-                <div class="empty-state">
+    <div id="main-content" class="hidden">
+        <div class="page-header">
+            <div class="page-title flex items-center">
+                <div class="header-icon">
                     <i class="fas fa-car"></i>
-                    <h3>Tidak Ada Data Mobil</h3>
-                    <p>Tidak ada data mobil yang tersedia saat ini</p>
                 </div>
-            @endif
+                <div>
+                    <h1>Laporan Mobil</h1>
+                    <p class="page-subtitle">Daftar mobil yang tersedia dan tidak tersedia</p>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <a href="{{ url()->previous() }}" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Kembali
+                </a>
+                <a href="{{ route('laporan.mobil.export') }}" class="export-btn">
+                    <i class="fas fa-download"></i>
+                    Download Excel
+                </a>
+            </div>
+        </div>
+
+        <div class="card fade-in">
+            <div class="table-container">
+                @if ($mobils->count() > 0)
+                    <table>
+                        <thead class="table-header">
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Mobil</th>
+                                <th>Merk</th>
+                                <th>Tipe</th>
+                                <th>Harga</th>
+                                <th>Status</th>
+                                <th>Tahun</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($mobils as $mobil)
+                                <tr class="table-row">
+                                    <td class="table-cell">{{ $mobil->id }}</td>
+                                    <td class="table-cell">{{ $mobil->name }}</td>
+                                    <td class="table-cell">{{ $mobil->merk->name ?? '-' }}</td>
+                                    <td class="table-cell">{{ $mobil->tipe->name ?? '-' }}</td>
+                                    <td class="table-cell">
+                                        <span class="price-display">Rp {{ number_format($mobil->harga, 0, ',', '.') }}</span>
+                                    </td>
+                                    <td class="table-cell">
+                                        @if ($mobil->status === 'available')
+                                            <span class="status-available">
+                                                <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
+                                                Tersedia
+                                            </span>
+                                        @else
+                                            <span class="status-unavailable">
+                                                <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
+                                                Tidak Tersedia
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="table-cell">{{ $mobil->tahun }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @else
+                    <div class="empty-state">
+                        <i class="fas fa-car"></i>
+                        <h3>Tidak Ada Data Mobil</h3>
+                        <p>Tidak ada data mobil yang tersedia saat ini</p>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 
     <script>
+        window.addEventListener('load', function() {
+            const skeletonLoader = document.getElementById('skeleton-loader');
+            const mainContent = document.getElementById('main-content');
+            setTimeout(() => {
+                skeletonLoader.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+            }, 1000);
+        });
+
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'

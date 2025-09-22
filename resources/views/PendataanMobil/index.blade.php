@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -353,152 +353,245 @@
         .fade-in {
             animation: fadeIn 0.6s ease-out;
         }
+
+        /* Skeleton Loading Styles */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s ease-in-out infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .skeleton-header {
+            height: 40px;
+            width: 60%;
+            margin-bottom: 1rem;
+        }
+
+        .skeleton-button {
+            height: 40px;
+            width: 150px;
+            border-radius: 8px;
+        }
+
+        .skeleton-stat-card {
+            height: 100px;
+            width: 100%;
+            border-radius: 12px;
+        }
+
+        .skeleton-table-header {
+            height: 48px;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .skeleton-table-row {
+            height: 64px;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body class="main-container">
-    <div class="page-header">
-        <div class="page-title">
-            <h1>Pendataan Mobil</h1>
-            <p class="page-subtitle">Kelola data mobil, status ketersediaan, dan informasi lengkap kendaraan</p>
+    <!-- Skeleton Loader -->
+    <div id="skeleton-loader">
+        <div class="page-header">
+            <div class="page-title">
+                <div class="skeleton skeleton-header"></div>
+                <div class="skeleton" style="height: 20px; width: 40%;"></div>
+            </div>
+            <div class="flex gap-3">
+                <div class="skeleton skeleton-button"></div>
+                <div class="skeleton skeleton-button"></div>
+            </div>
         </div>
-        <div class="flex gap-3">
-            <a href="{{ url('/dashboard') }}" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
-                Kembali ke Dashboard
-            </a>
-            <a href="{{ route('pendataanmobil.create') }}" class="add-btn">
-                <i class="fas fa-plus"></i>
-                Tambah Mobil
-            </a>
-        </div>
-    </div>
 
-    <div class="stats-container">
-        <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-                <i class="fas fa-car"></i>
-            </div>
-            <div class="stat-title">Total Mobil</div>
-            <div class="stat-value">{{ $mobils->count() }}</div>
+        <div class="stats-container">
+            <div class="skeleton skeleton-stat-card"></div>
+            <div class="skeleton skeleton-stat-card"></div>
+            <div class="skeleton skeleton-stat-card"></div>
         </div>
-        <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <div class="stat-title">Tersedia</div>
-            <div class="stat-value">{{ $mobils->where('status', 'available')->count() }}</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-                <i class="fas fa-times-circle"></i>
-            </div>
-            <div class="stat-title">Tidak Tersedia</div>
-            <div class="stat-value">{{ $mobils->where('status', 'unavailable')->count() }}</div>
-        </div>
-    </div>
 
-    <div class="card fade-in">
-        @if($mobils->count() > 0)
+        <div class="card">
             <div class="table-container">
-                <table class="w-full">
-                    <thead class="table-header">
-                        <tr>
-                            <th>Mobil</th>
-                            <th>Merek & Tipe</th>
-                            <th>Harga</th>
-                            <th>Status</th>
-                            <th>Tahun</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($mobils as $mobil)
-                            <tr class="table-row">
-                                <td class="table-cell">
-                                    <div class="car-info">
-                                        @if ($mobil->image)
-                                            <img src="{{ asset('storage/' . $mobil->image) }}"
-                                                 alt="{{ $mobil->name }}"
-                                                 class="car-image">
-                                        @else
-                                            <div class="no-image">
-                                                <i class="fas fa-car"></i>
+                <div class="skeleton skeleton-table-header"></div>
+                <div class="skeleton skeleton-table-row"></div>
+                <div class="skeleton skeleton-table-row"></div>
+                <div class="skeleton skeleton-table-row"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="hidden">
+        <div class="page-header">
+            <div class="page-title">
+                <h1>Pendataan Mobil</h1>
+                <p class="page-subtitle">Kelola data mobil, status ketersediaan, dan informasi lengkap kendaraan</p>
+            </div>
+            <div class="flex gap-3">
+                <a href="{{ url('/dashboard') }}" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Kembali ke Dashboard
+                </a>
+                <a href="{{ route('pendataanmobil.create') }}" class="add-btn">
+                    <i class="fas fa-plus"></i>
+                    Tambah Mobil
+                </a>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="stat-title">Total Mobil</div>
+                <div class="stat-value">{{ $mobils->count() }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-title">Tersedia</div>
+                <div class="stat-value">{{ $mobils->where('status', 'available')->count() }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="stat-title">Tidak Tersedia</div>
+                <div class="stat-value">{{ $mobils->where('status', 'unavailable')->count() }}</div>
+            </div>
+        </div>
+
+        <div class="card fade-in">
+            @if($mobils->count() > 0)
+                <div class="table-container">
+                    <table class="w-full">
+                        <thead class="table-header">
+                            <tr>
+                                <th>Mobil</th>
+                                <th>Merek & Tipe</th>
+                                <th>Harga</th>
+                                <th>Status</th>
+                                <th>Tahun</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($mobils as $mobil)
+                                <tr class="table-row">
+                                    <td class="table-cell">
+                                        <div class="car-info">
+                                            @if ($mobil->image)
+                                                <img src="{{ asset('storage/' . $mobil->image) }}"
+                                                     alt="{{ $mobil->name }}"
+                                                     class="car-image">
+                                            @else
+                                                <div class="no-image">
+                                                    <i class="fas fa-car"></i>
+                                                </div>
+                                            @endif
+                                            <div class="car-details">
+                                                <h4>{{ $mobil->name }}</h4>
+                                                <p>ID: {{ $mobil->id }}</p>
                                             </div>
-                                        @endif
-                                        <div class="car-details">
-                                            <h4>{{ $mobil->name }}</h4>
-                                            <p>ID: {{ $mobil->id }}</p>
                                         </div>
-                                    </div>
-                                </td>
-                                <td class="table-cell">
-                                    <div>
-                                        <div class="font-semibold text-gray-900">{{ $mobil->merk->name ?? 'Tidak ada merek' }}</div>
-                                        <div class="text-sm text-gray-500">{{ $mobil->tipe->name ?? 'Tidak ada tipe' }}</div>
-                                    </div>
-                                </td>
-                                <td class="table-cell">
-                                    <span class="price-display">Rp {{ number_format($mobil->harga, 0, ',', '.') }}</span>
-                                </td>
-                                <td class="table-cell">
-                                    @if ($mobil->status === 'available')
-                                        <span class="status-badge status-available">
-                                            <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
-                                            Tersedia
-                                        </span>
-                                    @else
-                                        <span class="status-badge status-unavailable">
-                                            <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
-                                            Tidak Tersedia
-                                        </span>
-                                    @endif
-                                </td>
-                                <td class="table-cell">
-                                    <span class="font-medium">{{ $mobil->tahun }}</span>
-                                </td>
-                                <td class="table-cell">
-                                    <div class="action-buttons">
+                                    </td>
+                                    <td class="table-cell">
+                                        <div>
+                                            <div class="font-semibold text-gray-900">{{ $mobil->merk->name ?? 'Tidak ada merek' }}</div>
+                                            <div class="text-sm text-gray-500">{{ $mobil->tipe->name ?? 'Tidak ada tipe' }}</div>
+                                        </div>
+                                    </td>
+                                    <td class="table-cell">
+                                        <span class="price-display">Rp {{ number_format($mobil->harga, 0, ',', '.') }}</span>
+                                    </td>
+                                    <td class="table-cell">
                                         @if ($mobil->status === 'available')
-                                            <a href="{{ route('pendataanmobil.edit', $mobil->id) }}" class="edit-btn">
-                                                <i class="fas fa-edit"></i>
-                                                Edit
-                                            </a>
-                                            <form action="{{ route('pendataanmobil.destroy', $mobil->id) }}" method="POST"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus mobil {{ $mobil->name }}? Tindakan ini tidak dapat dibatalkan.')" class="inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="delete-btn">
-                                                    <i class="fas fa-trash"></i>
-                                                    Hapus
-                                                </button>
-                                            </form>
+                                            <span class="status-badge status-available">
+                                                <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
+                                                Tersedia
+                                            </span>
                                         @else
-                                            <span class="disabled-btn">
-                                                <i class="fas fa-lock"></i>
+                                            <span class="status-badge status-unavailable">
+                                                <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
                                                 Tidak Tersedia
                                             </span>
                                         @endif
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @else
-            <div class="empty-state">
-                <i class="fas fa-car"></i>
-                <h3>Belum Ada Data Mobil</h3>
-                <p>Mulai tambahkan data mobil untuk mengelola inventori kendaraan Anda</p>
-                <a href="{{ route('pendataanmobil.create') }}" class="add-btn">
-                    <i class="fas fa-plus"></i>
-                    Tambah Mobil Pertama
-                </a>
-            </div>
-        @endif
+                                    </td>
+                                    <td class="table-cell">
+                                        <span class="font-medium">{{ $mobil->tahun }}</span>
+                                    </td>
+                                    <td class="table-cell">
+                                        <div class="action-buttons">
+                                            @if ($mobil->status === 'available')
+                                                <a href="{{ route('pendataanmobil.edit', $mobil->id) }}" class="edit-btn">
+                                                    <i class="fas fa-edit"></i>
+                                                    Edit
+                                                </a>
+                                                <form action="{{ route('pendataanmobil.destroy', $mobil->id) }}" method="POST"
+                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus mobil {{ $mobil->name }}? Tindakan ini tidak dapat dibatalkan.')" class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="delete-btn">
+                                                        <i class="fas fa-trash"></i>
+                                                        Hapus
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <span class="disabled-btn">
+                                                    <i class="fas fa-lock"></i>
+                                                    Tidak Tersedia
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="empty-state">
+                    <i class="fas fa-car"></i>
+                    <h3>Belum Ada Data Mobil</h3>
+                    <p>Mulai tambahkan data mobil untuk mengelola inventori kendaraan Anda</p>
+                    <a href="{{ route('pendataanmobil.create') }}" class="add-btn">
+                        <i class="fas fa-plus"></i>
+                        Tambah Mobil Pertama
+                    </a>
+                </div>
+            @endif
+        </div>
     </div>
 
     <script>
+        // Skeleton Loader Logic
+        window.addEventListener('load', function() {
+            const skeletonLoader = document.getElementById('skeleton-loader');
+            const mainContent = document.getElementById('main-content');
+            setTimeout(() => {
+                skeletonLoader.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+            }, 1000); // Simulate loading delay
+        });
+
         document.querySelectorAll('form[method="POST"]').forEach(form => {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();

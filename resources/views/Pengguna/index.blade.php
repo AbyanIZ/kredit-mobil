@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -199,7 +199,7 @@
 
         .page-header {
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 2rem;
             gap: 2rem;
@@ -279,176 +279,263 @@
         .fade-in {
             animation: fadeIn 0.5s ease-out;
         }
+
+        /* Skeleton Loading Styles */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s ease-in-out infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .skeleton-header {
+            height: 40px;
+            width: 60%;
+            margin-bottom: 1rem;
+        }
+
+        .skeleton-tab {
+            height: 40px;
+            width: 120px;
+            border-radius: 8px;
+        }
+
+        .skeleton-table-header {
+            height: 48px;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .skeleton-table-row {
+            height: 56px;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .skeleton-button {
+            height: 40px;
+            width: 150px;
+            border-radius: 8px;
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body class="main-container">
-    <!-- Page Header -->
-    <div class="page-header">
-        <div class="page-title">
-            <h1>Manajemen Pengguna</h1>
-            <p class="page-subtitle">Kelola pengguna dan administrator sistem dengan mudah</p>
+    <div id="skeleton-loader">
+        <div class="page-header">
+            <div class="page-title">
+                <div class="skeleton skeleton-header"></div>
+                <div class="skeleton" style="height: 20px; width: 40%;"></div>
+            </div>
+            <div class="skeleton skeleton-button"></div>
         </div>
-        <a href="{{ route('dashboard') }}" class="back-btn">
-            <i class="fas fa-arrow-left"></i>
-            Kembali ke Dashboard
-        </a>
+
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <div class="skeleton skeleton-tab"></div>
+                <div class="skeleton skeleton-tab"></div>
+            </div>
+
+            <div class="card">
+                <div class="section-header p-6 border-b border-gray-100">
+                    <div>
+                        <div class="skeleton" style="height: 24px; width: 200px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 300px; margin-top: 4px;"></div>
+                    </div>
+                    <div class="skeleton skeleton-button"></div>
+                </div>
+                <div class="table-container">
+                    <div class="skeleton skeleton-table-header"></div>
+                    <div class="skeleton skeleton-table-row"></div>
+                    <div class="skeleton skeleton-table-row"></div>
+                    <div class="skeleton skeleton-table-row"></div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Tab Container -->
-    <div class="tab-container">
-        <div class="tab-buttons">
-            <button id="tabUser" class="tab-button active">
-                <i class="fas fa-users mr-2"></i>
-                Pengguna
-            </button>
-            <button id="tabAdmin" class="tab-button">
-                <i class="fas fa-user-shield mr-2"></i>
-                Administrator
-            </button>
+    <div id="main-content" class="hidden">
+        <div class="page-header">
+            <div class="page-title">
+                <h1>Manajemen Pengguna</h1>
+                <p class="page-subtitle">Kelola pengguna dan administrator sistem dengan mudah</p>
+            </div>
+            <a href="{{ route('dashboard') }}" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Kembali ke Dashboard
+            </a>
         </div>
 
-        <!-- User Section -->
-        <div id="contentUser" class="content-section active card fade-in">
-            <div class="section-header p-6 border-b border-gray-100">
-                <div>
-                    <h2 class="section-title">Daftar Pengguna</h2>
-                    <p class="text-sm text-gray-500 mt-1">Kelola semua pengguna yang terdaftar dalam sistem</p>
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button id="tabUser" class="tab-button active">
+                    <i class="fas fa-users mr-2"></i>
+                    Pengguna
+                </button>
+                <button id="tabAdmin" class="tab-button">
+                    <i class="fas fa-user-shield mr-2"></i>
+                    Administrator
+                </button>
+            </div>
+
+            <div id="contentUser" class="content-section active card fade-in">
+                <div class="section-header p-6 border-b border-gray-100">
+                    <div>
+                        <h2 class="section-title">Daftar Pengguna</h2>
+                        <p class="text-sm text-gray-500 mt-1">Kelola semua pengguna yang terdaftar dalam sistem</p>
+                    </div>
+                    <a href="{{ route('pengguna.create') }}" class="add-btn">
+                        <i class="fas fa-plus"></i>
+                        Tambah Pengguna
+                    </a>
                 </div>
-                <a href="{{ route('pengguna.create') }}" class="add-btn">
-                    <i class="fas fa-plus"></i>
-                    Tambah Pengguna
-                </a>
-            </div>
 
-            <div class="table-container">
-                <table class="w-full">
-                    <thead class="table-header">
-                        <tr>
-                            <th>Nama Pengguna</th>
-                            <th>Alamat Email</th>
-                            <th>Role</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($users as $user)
-                        <tr class="table-row">
-                            <td class="table-cell">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                                        <span class="text-blue-600 font-medium text-sm">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                <div class="table-container">
+                    <table class="w-full">
+                        <thead class="table-header">
+                            <tr>
+                                <th>Nama Pengguna</th>
+                                <th>Alamat Email</th>
+                                <th>Role</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($users as $user)
+                            <tr class="table-row">
+                                <td class="table-cell">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                            <span class="text-blue-600 font-medium text-sm">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                                        </div>
+                                        <span class="font-medium text-gray-900">{{ $user->name }}</span>
                                     </div>
-                                    <span class="font-medium text-gray-900">{{ $user->name }}</span>
-                                </div>
-                            </td>
-                            <td class="table-cell">{{ $user->email }}</td>
-                            <td class="table-cell">
-                                <span class="role-badge {{ $user->role }}">
-                                    <i class="fas fa-circle mr-1" style="font-size: 0.5rem;"></i>
-                                    {{ ucfirst($user->role) }}
-                                </span>
-                            </td>
-                            <td class="table-cell">
-                                <div class="action-buttons">
-                                    <a href="{{ route('pengguna.edit', $user->id) }}" class="edit-btn">
-                                        <i class="fas fa-edit"></i>
-                                        Edit
-                                    </a>
-                                    <form action="{{ route('pengguna.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus pengguna ini?')" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="delete-btn">
-                                            <i class="fas fa-trash"></i>
-                                            Hapus
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Admin Section -->
-        <div id="contentAdmin" class="content-section card">
-            <div class="section-header p-6 border-b border-gray-100">
-                <div>
-                    <h2 class="section-title">Daftar Administrator</h2>
-                    <p class="text-sm text-gray-500 mt-1">Kelola administrator yang memiliki akses penuh ke sistem</p>
+                                </td>
+                                <td class="table-cell">{{ $user->email }}</td>
+                                <td class="table-cell">
+                                    <span class="role-badge {{ $user->role }}">
+                                        <i class="fas fa-circle mr-1" style="font-size: 0.5rem;"></i>
+                                        {{ ucfirst($user->role) }}
+                                    </span>
+                                </td>
+                                <td class="table-cell">
+                                    <div class="action-buttons">
+                                        <a href="{{ route('pengguna.edit', $user->id) }}" class="edit-btn">
+                                            <i class="fas fa-edit"></i>
+                                            Edit
+                                        </a>
+                                        <form action="{{ route('pengguna.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus pengguna ini?')" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="delete-btn">
+                                                <i class="fas fa-trash"></i>
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-                <a href="{{ route('pengguna.create') }}" class="add-btn">
-                    <i class="fas fa-plus"></i>
-                    Tambah Administrator
-                </a>
             </div>
 
-            <div class="table-container">
-                <table class="w-full">
-                    <thead class="table-header">
-                        <tr>
-                            <th>Nama Administrator</th>
-                            <th>Alamat Email</th>
-                            <th>Role</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($admins as $admin)
-                        <tr class="table-row">
-                            <td class="table-cell">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
-                                        <span class="text-purple-600 font-medium text-sm">{{ strtoupper(substr($admin->name, 0, 1)) }}</span>
+            <div id="contentAdmin" class="content-section card">
+                <div class="section-header p-6 border-b border-gray-100">
+                    <div>
+                        <h2 class="section-title">Daftar Administrator</h2>
+                        <p class="text-sm text-gray-500 mt-1">Kelola administrator yang memiliki akses penuh ke sistem</p>
+                    </div>
+                    <a href="{{ route('pengguna.create') }}" class="add-btn">
+                        <i class="fas fa-plus"></i>
+                        Tambah Administrator
+                    </a>
+                </div>
+
+                <div class="table-container">
+                    <table class="w-full">
+                        <thead class="table-header">
+                            <tr>
+                                <th>Nama Administrator</th>
+                                <th>Alamat Email</th>
+                                <th>Role</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($admins as $admin)
+                            <tr class="table-row">
+                                <td class="table-cell">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                            <span class="text-purple-600 font-medium text-sm">{{ strtoupper(substr($admin->name, 0, 1)) }}</span>
+                                        </div>
+                                        <span class="font-medium text-gray-900">{{ $admin->name }}</span>
                                     </div>
-                                    <span class="font-medium text-gray-900">{{ $admin->name }}</span>
-                                </div>
-                            </td>
-                            <td class="table-cell">{{ $admin->email }}</td>
-                            <td class="table-cell">
-                                <span class="role-badge {{ $admin->role }}">
-                                    <i class="fas fa-circle mr-1" style="font-size: 0.5rem;"></i>
-                                    {{ ucfirst($admin->role) }}
-                                </span>
-                            </td>
-                            <td class="table-cell">
-                                <div class="action-buttons">
-                                    <a href="{{ route('pengguna.edit', $admin->id) }}" class="edit-btn">
-                                        <i class="fas fa-edit"></i>
-                                        Edit
-                                    </a>
-                                    <form action="{{ route('pengguna.destroy', $admin->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus administrator ini?')" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="delete-btn">
-                                            <i class="fas fa-trash"></i>
-                                            Hapus
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                </td>
+                                <td class="table-cell">{{ $admin->email }}</td>
+                                <td class="table-cell">
+                                    <span class="role-badge {{ $admin->role }}">
+                                        <i class="fas fa-circle mr-1" style="font-size: 0.5rem;"></i>
+                                        {{ ucfirst($admin->role) }}
+                                    </span>
+                                </td>
+                                <td class="table-cell">
+                                    <div class="action-buttons">
+                                        <a href="{{ route('pengguna.edit', $admin->id) }}" class="edit-btn">
+                                            <i class="fas fa-edit"></i>
+                                            Edit
+                                        </a>
+                                        <form action="{{ route('pengguna.destroy', $admin->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus administrator ini?')" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="delete-btn">
+                                                <i class="fas fa-trash"></i>
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Tab functionality
+        window.addEventListener('load', function() {
+            const skeletonLoader = document.getElementById('skeleton-loader');
+            const mainContent = document.getElementById('main-content');
+            setTimeout(() => {
+                skeletonLoader.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+            }, 1000);
+        });
+
         const tabUser = document.getElementById('tabUser');
         const tabAdmin = document.getElementById('tabAdmin');
         const contentUser = document.getElementById('contentUser');
         const contentAdmin = document.getElementById('contentAdmin');
 
         function switchTab(activeTab, inactiveTab, activeContent, inactiveContent) {
-            // Update tab styles
             activeTab.classList.add('active');
             inactiveTab.classList.remove('active');
 
-            // Update content visibility with animation
             inactiveContent.classList.remove('active');
             setTimeout(() => {
                 activeContent.classList.add('active');
@@ -467,7 +554,6 @@
             switchTab(tabAdmin, tabUser, contentAdmin, contentUser);
         });
 
-        // Enhanced delete confirmation
         document.querySelectorAll('form[method="POST"]').forEach(form => {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -480,7 +566,6 @@
             });
         });
 
-        // Add hover effects to table rows
         document.querySelectorAll('.table-row').forEach(row => {
             row.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateX(2px)';

@@ -265,10 +265,98 @@
             height: 3px;
             background: linear-gradient(90deg, #3b82f6, #10b981, #8b5cf6, #f59e0b);
         }
+
+        /* Skeleton Loading Styles */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s ease-in-out infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .skeleton-header {
+            height: 40px;
+            width: 60%;
+            margin-bottom: 1rem;
+        }
+
+        .skeleton-card {
+            height: 100px;
+            width: 100%;
+        }
+
+        .skeleton-chart {
+            height: 300px;
+            width: 100%;
+        }
+
+        .skeleton-calendar {
+            height: 200px;
+            width: 100%;
+        }
+
+        .skeleton-quick-action {
+            height: 80px;
+            width: 100%;
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
 <body class="main-container">
+    <!-- Skeleton Loading -->
+    <div id="skeleton-loader" class="main-content">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <div class="skeleton skeleton-header"></div>
+                <div class="skeleton" style="height: 20px; width: 40%;"></div>
+            </div>
+            <div class="flex items-center">
+                <div class="skeleton w-10 h-10 rounded-full mr-2"></div>
+                <div>
+                    <div class="skeleton" style="height: 16px; width: 100px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 80px; margin-top: 4px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="col-span-2">
+                <div class="skeleton skeleton-chart"></div>
+                <div class="skeleton" style="height: 180px; margin-top: 1.5rem;"></div>
+            </div>
+            <div class="space-y-6">
+                <div class="skeleton skeleton-calendar"></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="skeleton skeleton-quick-action"></div>
+                    <div class="skeleton skeleton-quick-action"></div>
+                    <div class="skeleton skeleton-quick-action"></div>
+                    <div class="skeleton skeleton-quick-action"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
     <aside class="sidebar w-64 text-white h-full fixed flex flex-col justify-between">
         <div>
             <div class="p-5 text-xl font-semibold border-b border-blue-500 flex items-center">
@@ -321,7 +409,7 @@
         </div>
     </aside>
 
-    <main class="main-content">
+    <main id="main-content" class="main-content hidden">
         <div class="flex justify-between items-center mb-8">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">Selamat Datang, {{ auth()->user()->name }}</h1>
@@ -452,6 +540,16 @@
     </main>
 
     <script>
+        // Skeleton Loader Logic
+        window.addEventListener('load', function() {
+            const skeletonLoader = document.getElementById('skeleton-loader');
+            const mainContent = document.getElementById('main-content');
+            setTimeout(() => {
+                skeletonLoader.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+            }, 1000); // Simulate loading delay
+        });
+
         const chartData = {
             labels: ['Pengguna', 'Mobil', 'Penerimaan Mobil', 'Merek'],
             data: [{{ $totalUsers }}, {{ $totalMobils }}, {{ $totalKreditMobils }}, {{ $totalMerks }}],

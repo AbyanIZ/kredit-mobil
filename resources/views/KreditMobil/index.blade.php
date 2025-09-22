@@ -264,129 +264,224 @@
         .fade-in {
             animation: fadeIn 0.6s ease-out;
         }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s ease-in-out infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .skeleton-header {
+            height: 40px;
+            width: 60%;
+            margin-bottom: 1rem;
+        }
+
+        .skeleton-button {
+            height: 40px;
+            width: 150px;
+            border-radius: 8px;
+        }
+
+        .skeleton-stat-card {
+            height: 100px;
+            width: 100%;
+            border-radius: 12px;
+        }
+
+        .skeleton-table-header {
+            height: 48px;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .skeleton-table-row {
+            height: 56px;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .skeleton-success-message {
+            height: 48px;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body class="main-container">
-    <div class="page-header">
-        <div class="page-title">
-            <h1>Data Kredit Mobil</h1>
-            <p class="page-subtitle">Kelola data pengajuan kredit mobil dalam sistem</p>
+    <div id="skeleton-loader">
+        <div class="page-header">
+            <div class="page-title">
+                <div class="skeleton skeleton-header"></div>
+                <div class="skeleton" style="height: 20px; width: 40%;"></div>
+            </div>
+            <div class="flex gap-3">
+                <div class="skeleton skeleton-button"></div>
+            </div>
         </div>
-        <div class="flex gap-3">
-            <a href="{{ route('dashboard') }}" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
-                Kembali ke Dashboard
-            </a>
-        </div>
-    </div>
 
-    <div class="stats-container">
-        <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-                <i class="fas fa-file-alt"></i>
-            </div>
-            <div class="stat-title">Total Pengajuan</div>
-            <div class="stat-value">{{ $kredits->count() }}</div>
+        <div class="stats-container">
+            <div class="skeleton skeleton-stat-card"></div>
+            <div class="skeleton skeleton-stat-card"></div>
+            <div class="skeleton skeleton-stat-card"></div>
+            <div class="skeleton skeleton-stat-card"></div>
         </div>
-        <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <div class="stat-title">Disetujui</div>
-            <div class="stat-value">{{ $kredits->where('status', 'approved')->count() }}</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%);">
-                <i class="fas fa-hourglass-half"></i>
-            </div>
-            <div class="stat-title">Pending</div>
-            <div class="stat-value">{{ $kredits->where('status', 'pending')->count() }}</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-                <i class="fas fa-times-circle"></i>
-            </div>
-            <div class="stat-title">Ditolak</div>
-            <div class="stat-value">{{ $kredits->where('status', 'rejected')->count() }}</div>
-        </div>
-    </div>
 
-    <div class="card fade-in">
-        @if(session('success'))
-            <div class="success-message">
-                <i class="fas fa-check-circle"></i>
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if($kredits->count() > 0)
+        <div class="card">
+            <div class="skeleton skeleton-success-message"></div>
             <div class="table-container">
-                <table class="w-full">
-                    <thead class="table-header">
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Pemohon</th>
-                            <th>Mobil</th>
-                            <th>DP</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($kredits as $kredit)
-                            <tr class="table-row">
-                                <td class="table-cell">{{ $kredit->id }}</td>
-                                <td class="table-cell">{{ $kredit->nama }}</td>
-                                <td class="table-cell">{{ $kredit->mobil->name ?? '-' }}</td>
-                                <td class="table-cell">
-                                    <span class="price-display">Rp {{ number_format($kredit->dp, 0, ',', '.') }}</span>
-                                </td>
-                                <td class="table-cell">
-                                    @if($kredit->status === 'pending')
-                                        <span class="status-badge status-pending">
-                                            <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
-                                            Pending
-                                        </span>
-                                    @elseif($kredit->status === 'approved')
-                                        <span class="status-badge status-approved">
-                                            <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
-                                            Disetujui
-                                        </span>
-                                    @elseif($kredit->status === 'rejected')
-                                        <span class="status-badge status-rejected">
-                                            <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
-                                            Ditolak
-                                        </span>
-                                    @else
-                                        <span class="status-badge status-pending">
-                                            <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
-                                            Pending
-                                        </span>
-                                    @endif
-                                </td>
-                                <td class="table-cell">
-                                    <div class="action-buttons">
-                                        <a href="{{ route('kreditmobil.show', $kredit->id) }}" class="detail-btn">
-                                            <i class="fas fa-eye"></i>
-                                            Detail
-                                        </a>
-                                    </div>
-                                </td>
+                <div class="skeleton skeleton-table-header"></div>
+                <div class="skeleton skeleton-table-row"></div>
+                <div class="skeleton skeleton-table-row"></div>
+                <div class="skeleton skeleton-table-row"></div>
+            </div>
+        </div>
+    </div>
+    <div id="main-content" class="hidden">
+        <div class="page-header">
+            <div class="page-title">
+                <h1>Data Kredit Mobil</h1>
+                <p class="page-subtitle">Kelola data pengajuan kredit mobil dalam sistem</p>
+            </div>
+            <div class="flex gap-3">
+                <a href="{{ route('dashboard') }}" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Kembali ke Dashboard
+                </a>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="stat-title">Total Pengajuan</div>
+                <div class="stat-value">{{ $kredits->count() }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-title">Disetujui</div>
+                <div class="stat-value">{{ $kredits->where('status', 'approved')->count() }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%);">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+                <div class="stat-title">Pending</div>
+                <div class="stat-value">{{ $kredits->where('status', 'pending')->count() }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="stat-title">Ditolak</div>
+                <div class="stat-value">{{ $kredits->where('status', 'rejected')->count() }}</div>
+            </div>
+        </div>
+
+        <div class="card fade-in">
+            @if(session('success'))
+                <div class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if($kredits->count() > 0)
+                <div class="table-container">
+                    <table class="w-full">
+                        <thead class="table-header">
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Pemohon</th>
+                                <th>Mobil</th>
+                                <th>DP</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @else
-            <div class="empty-state">
-                <i class="fas fa-file-alt"></i>
-                <h3>Belum Ada Data Kredit</h3>
-                <p>Tidak ada pengajuan kredit mobil yang tersedia saat ini</p>
-            </div>
-        @endif
+                        </thead>
+                        <tbody>
+                            @foreach($kredits as $kredit)
+                                <tr class="table-row">
+                                    <td class="table-cell">{{ $kredit->id }}</td>
+                                    <td class="table-cell">{{ $kredit->nama }}</td>
+                                    <td class="table-cell">{{ $kredit->mobil->name ?? '-' }}</td>
+                                    <td class="table-cell">
+                                        <span class="price-display">Rp {{ number_format($kredit->dp, 0, ',', '.') }}</span>
+                                    </td>
+                                    <td class="table-cell">
+                                        @if($kredit->status === 'pending')
+                                            <span class="status-badge status-pending">
+                                                <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
+                                                Pending
+                                            </span>
+                                        @elseif($kredit->status === 'approved')
+                                            <span class="status-badge status-approved">
+                                                <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
+                                                Disetujui
+                                            </span>
+                                        @elseif($kredit->status === 'rejected')
+                                            <span class="status-badge status-rejected">
+                                                <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
+                                                Ditolak
+                                            </span>
+                                        @else
+                                            <span class="status-badge status-pending">
+                                                <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
+                                                Pending
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="table-cell">
+                                        <div class="action-buttons">
+                                            <a href="{{ route('kreditmobil.show', $kredit->id) }}" class="detail-btn">
+                                                <i class="fas fa-eye"></i>
+                                                Detail
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="empty-state">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>Belum Ada Data Kredit</h3>
+                    <p>Tidak ada pengajuan kredit mobil yang tersedia saat ini</p>
+                </div>
+            @endif
+        </div>
     </div>
 
     <script>
+        window.addEventListener('load', function() {
+            const skeletonLoader = document.getElementById('skeleton-loader');
+            const mainContent = document.getElementById('main-content');
+            setTimeout(() => {
+                skeletonLoader.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+            }, 1000);
+        });
+
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -402,6 +497,10 @@
 
         document.querySelectorAll('.stat-card').forEach(card => {
             observer.observe(card);
+        });
+
+        document.querySelectorAll('.table-row').forEach(row => {
+            observer.observe(row);
         });
     </script>
 </body>
