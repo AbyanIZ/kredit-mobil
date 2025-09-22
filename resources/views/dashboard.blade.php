@@ -299,6 +299,11 @@
             width: 100%;
         }
 
+        .skeleton-table {
+            height: 150px;
+            width: 100%;
+        }
+
         .skeleton-calendar {
             height: 200px;
             width: 100%;
@@ -311,6 +316,71 @@
 
         .hidden {
             display: none;
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .data-table th {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .data-table td {
+            color: #4b5563;
+        }
+
+        /* User Table Styling */
+        .user-table th {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        /* KreditMobil Table Styling */
+        .kredit-table th {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        /* Role Badge Styling */
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .role-badge.user {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .role-badge.admin {
+            background: #f3e8ff;
+            color: #7c3aed;
+        }
+
+        .table-row {
+            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+        }
+
+        .table-row:hover {
+            background-color: #f9fafb;
+            transform: translateX(4px) scale(1.01);
         }
     </style>
 </head>
@@ -343,6 +413,8 @@
             <div class="col-span-2">
                 <div class="skeleton skeleton-chart"></div>
                 <div class="skeleton" style="height: 180px; margin-top: 1.5rem;"></div>
+                <div class="skeleton skeleton-table" style="margin-top: 1.5rem;"></div>
+                <div class="skeleton skeleton-table" style="margin-top: 1.5rem;"></div>
             </div>
             <div class="space-y-6">
                 <div class="skeleton skeleton-calendar"></div>
@@ -470,19 +542,86 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="col-span-2 card p-5 chart-card">
-                <div class="chart-header">
-                    <h2 class="text-lg font-semibold text-gray-900">Distribusi Data Sistem</h2>
-                    <div class="chart-actions">
-                        <button class="chart-btn" id="toggle-doughnut">Ubah Tampilan</button>
+            <div class="col-span-2 space-y-6">
+                <!-- System Data Distribution Chart -->
+                <div class="card p-5 chart-card">
+                    <div class="chart-header">
+                        <h2 class="text-lg font-semibold text-gray-900">Distribusi Data Sistem</h2>
+                        <div class="chart-actions">
+                            <button class="chart-btn" id="toggle-doughnut">Ubah Tampilan</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="distributionChart"></canvas>
+                    </div>
+                    <div class="chart-legend" id="chart-legend"></div>
+                    <div class="line-chart-container">
+                        <canvas id="trendChart"></canvas>
                     </div>
                 </div>
-                <div class="chart-container">
-                    <canvas id="distributionChart"></canvas>
+
+                <!-- User List Table -->
+                <div class="card p-5">
+                    <h2 class="text-lg font-semibold text-gray-900">Daftar Pengguna</h2>
+                    <table class="data-table user-table">
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Peran</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($users as $user)
+                                <tr class="table-row">
+                                    <td class="table-cell">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full flex items-center justify-center mr-3 {{ $user->role === 'admin' ? 'bg-purple-100' : 'bg-blue-100' }}">
+                                                <span class="font-medium text-sm {{ $user->role === 'admin' ? 'text-purple-600' : 'text-blue-600' }}">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                                            </div>
+                                            <span class="font-medium text-gray-900">{{ $user->name }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="table-cell">
+                                        <span class="role-badge {{ $user->role }}">
+                                            <i class="fas fa-circle mr-1" style="font-size: 0.5rem;"></i>
+                                            {{ ucfirst($user->role) }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-                <div class="chart-legend" id="chart-legend"></div>
-                <div class="line-chart-container">
-                    <canvas id="trendChart"></canvas>
+
+                <!-- KreditMobil Status Distribution Table -->
+                <div class="card p-5">
+                    <h2 class="text-lg font-semibold text-gray-900">Distribusi Status Penerimaan Mobil</h2>
+                    <table class="data-table kredit-table">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Jumlah</th>
+                                <th>Persentase</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Pending</td>
+                                <td>{{ $pendingKredits }}</td>
+                                <td>{{ $totalKreditMobils > 0 ? round(($pendingKredits / $totalKreditMobils) * 100, 2) : 0 }}%</td>
+                            </tr>
+                            <tr>
+                                <td>Selesai</td>
+                                <td>{{ $doneKredits }}</td>
+                                <td>{{ $totalKreditMobils > 0 ? round(($doneKredits / $totalKreditMobils) * 100, 2) : 0 }}%</td>
+                            </tr>
+                            <tr>
+                                <td>Ditolak</td>
+                                <td>{{ $rejectedKredits }}</td>
+                                <td>{{ $totalKreditMobils > 0 ? round(($rejectedKredits / $totalKreditMobils) * 100, 2) : 0 }}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="space-y-6">
@@ -547,7 +686,7 @@
             setTimeout(() => {
                 skeletonLoader.classList.add('hidden');
                 mainContent.classList.remove('hidden');
-            }, 1000); // Simulate loading delay
+            }, 1000);
         });
 
         const chartData = {
