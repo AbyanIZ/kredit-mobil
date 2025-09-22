@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\PendataanMobilController;
 use App\Http\Controllers\Web\LaporanMobilController;
 use App\Http\Controllers\Web\KreditMobilController;
 use App\Http\Controllers\Web\MerkController;
+use App\Http\Controllers\Web\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,6 +23,8 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     })->name('dashboard');
 });
 
+Route::post('/midtrans/callback', [PaymentController::class, 'callback']);
+
 Route::get('/pengguna', [UserManagementController::class, 'index'])->name('pengguna.index');
 Route::get('/pengguna/create', [UserManagementController::class, 'create'])->name('pengguna.create');
 Route::post('/pengguna', [UserManagementController::class, 'store'])->name('pengguna.store');
@@ -32,6 +35,8 @@ Route::delete('/pengguna/{id}', [UserManagementController::class, 'destroy'])->n
 Route::get('/pendataanmobil', [PendataanMobilController::class, 'index'])->name('pendataanmobil.index');
 Route::resource('pendataanmobil', PendataanMobilController::class);
 Route::resource('pendataanmobil', App\Http\Controllers\web\PendataanMobilController::class);
+
+
 
 
 Route::get('/laporan-mobil', [LaporanMobilController::class, 'index'])->name('laporanmobil.index');

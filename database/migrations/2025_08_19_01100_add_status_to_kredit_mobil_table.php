@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('kredit_mobil', function (Blueprint $table) {
+        Schema::table('kredit_mobils', function (Blueprint $table) {
             $table->enum('status', ['pending', 'done', 'reject'])->default('pending'); // status pengajuan kredit
             $table->enum('payment_status', ['unpaid', 'paid'])->default('unpaid');    // status pembayaran
         });
@@ -22,7 +22,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('kredit_mobil', function (Blueprint $table) {
+        Schema::table('kredit_mobils', function (Blueprint $table) {
             $table->dropColumn(['status', 'payment_status']);
         });
     }

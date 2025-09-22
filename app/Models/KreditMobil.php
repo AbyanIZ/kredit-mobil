@@ -9,7 +9,7 @@ class KreditMobil extends Model
 {
     use HasFactory;
 
-    protected $table = 'kredit_mobil';
+    protected $table = 'kredit_mobils';
 
     protected $fillable = [
         'mobil_id',

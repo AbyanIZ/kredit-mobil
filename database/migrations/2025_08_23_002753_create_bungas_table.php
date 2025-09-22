@@ -13,13 +13,22 @@ return new class extends Migration
     {
         Schema::create('bungas', function (Blueprint $table) {
             $table->id();
+
+            // Relasi ke user & kredit mobil
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('kredit_mobil_id')->constrained('kredit_mobil')->onDelete('cascade');
-            $table->decimal('bunga', 5, 2);
-            $table->datetime('tanggal_bayar')->nullable();
+            $table->foreignId('kredit_mobil_id')->constrained('kredit_mobils')->onDelete('cascade');
+
+            // Data bunga
+            $table->decimal('bunga', 5, 2); // contoh: 2.50 (%)
+            $table->dateTime('tanggal_bayar')->nullable();
             $table->decimal('total', 15, 2)->nullable();
-            $table->enum('status', ['pending', ''])->default('pending');
-            $table->string('reason');
+
+            // Status pembayaran bunga
+            $table->enum('status', ['pending', 'paid', 'failed'])->default('pending');
+
+            // Alasan (jika gagal/reject)
+            $table->string('reason')->nullable();
+
             $table->timestamps();
         });
     }

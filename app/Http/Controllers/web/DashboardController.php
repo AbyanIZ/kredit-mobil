@@ -15,8 +15,8 @@ class DashboardController extends Controller
         $totalUsers = User::count();
         $totalMobils = Mobil::count();
         $totalMerks = Merk::count();
-        $totalKredits = KreditMobil::count();
+        $totalKreditMobils = KreditMobil::count();
 
-        return view('dashboard', compact('totalUsers', 'totalMobils', 'totalMerks', 'totalKredits'));
+        return view('dashboard', compact('totalUsers', 'totalMobils', 'totalMerks', 'totalKreditMobils'));
     }
 }

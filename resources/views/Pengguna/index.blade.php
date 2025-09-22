@@ -3,142 +3,493 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manajemen Pengguna</title>
+    <title>Manajemen Pengguna | Sitoko</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 p-8">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f9fafb;
+            min-height: 100vh;
+        }
 
-    <!-- Tombol Back -->
-    <div class="mb-6">
-        <a href="{{ route('dashboard') }}"
-           class="inline-block px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition">
-            ⬅ Kembali ke Dashboard
+        .main-container {
+            background: #f9fafb;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-button {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .tab-button:not(.active) {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .tab-button:not(.active):hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(107, 114, 128, 0.2);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+
+        .edit-btn {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .edit-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        }
+
+        .table-container {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .table-header th {
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: #374151;
+            text-align: left;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .table-row {
+            border-bottom: 1px solid #f3f4f6;
+            transition: background-color 0.2s ease;
+        }
+
+        .table-row:hover {
+            background-color: #f9fafb;
+        }
+
+        .table-cell {
+            padding: 1rem 1.5rem;
+            color: #4b5563;
+            font-size: 0.875rem;
+        }
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .role-badge.user {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .role-badge.admin {
+            background: #f3e8ff;
+            color: #7c3aed;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            gap: 2rem;
+        }
+
+        .page-title {
+            flex: 1;
+        }
+
+        .page-title h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .tab-container {
+            margin-bottom: 2rem;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 0 0.5rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6b7280;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="main-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-title">
+            <h1>Manajemen Pengguna</h1>
+            <p class="page-subtitle">Kelola pengguna dan administrator sistem dengan mudah</p>
+        </div>
+        <a href="{{ route('dashboard') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Kembali ke Dashboard
         </a>
     </div>
 
-    <h1 class="text-3xl font-bold mb-6">Manajemen Pengguna</h1>
-
-    <!-- Tab Menu -->
-    <div class="mb-6 flex space-x-4">
-        <button id="tabUser" class="px-4 py-2 bg-blue-600 text-white rounded">User</button>
-        <button id="tabAdmin" class="px-4 py-2 bg-gray-300 rounded">Admin</button>
-    </div>
-
-    <!-- Tabel User -->
-    <div id="contentUser">
-        <div class="bg-white shadow-md rounded-lg p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold">Daftar User</h2>
-                <a href="{{ route('pengguna.create') }}"
-                   class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
-                    ➕ Tambah Pengguna
-                </a>
-            </div>
-            <table class="w-full border-collapse border border-gray-300">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="border px-4 py-2">Nama</th>
-                        <th class="border px-4 py-2">Email</th>
-                        <th class="border px-4 py-2">Role</th>
-                        <th class="border px-4 py-2">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($users as $user)
-                    <tr>
-                        <td class="border px-4 py-2">{{ $user->name }}</td>
-                        <td class="border px-4 py-2">{{ $user->email }}</td>
-                        <td class="border px-4 py-2">{{ ucfirst($user->role) }}</td>
-                        <td class="border px-4 py-2 flex space-x-2">
-                            <a href="{{ route('pengguna.edit', $user->id) }}"
-                               class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">
-                                ✏ Edit
-                            </a>
-                            <form action="{{ route('pengguna.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Yakin hapus pengguna ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
-                                    🗑 Delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    <!-- Tab Container -->
+    <div class="tab-container">
+        <div class="tab-buttons">
+            <button id="tabUser" class="tab-button active">
+                <i class="fas fa-users mr-2"></i>
+                Pengguna
+            </button>
+            <button id="tabAdmin" class="tab-button">
+                <i class="fas fa-user-shield mr-2"></i>
+                Administrator
+            </button>
         </div>
-    </div>
 
-    <div id="contentAdmin" class="hidden">
-        <div class="bg-white shadow-md rounded-lg p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold">Daftar Admin</h2>
-                <a href="{{ route('pengguna.create') }}"
-                   class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
-                    ➕ Tambah Pengguna
+        <!-- User Section -->
+        <div id="contentUser" class="content-section active card fade-in">
+            <div class="section-header p-6 border-b border-gray-100">
+                <div>
+                    <h2 class="section-title">Daftar Pengguna</h2>
+                    <p class="text-sm text-gray-500 mt-1">Kelola semua pengguna yang terdaftar dalam sistem</p>
+                </div>
+                <a href="{{ route('pengguna.create') }}" class="add-btn">
+                    <i class="fas fa-plus"></i>
+                    Tambah Pengguna
                 </a>
             </div>
-            <table class="w-full border-collapse border border-gray-300">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="border px-4 py-2">Nama</th>
-                        <th class="border px-4 py-2">Email</th>
-                        <th class="border px-4 py-2">Role</th>
-                        <th class="border px-4 py-2">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($admins as $admin)
-                    <tr>
-                        <td class="border px-4 py-2">{{ $admin->name }}</td>
-                        <td class="border px-4 py-2">{{ $admin->email }}</td>
-                        <td class="border px-4 py-2">{{ ucfirst($admin->role) }}</td>
-                        <td class="border px-4 py-2 flex space-x-2">
-                            <a href="{{ route('pengguna.edit', $admin->id) }}"
-                               class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">
-                                ✏ Edit
-                            </a>
-                            <form action="{{ route('pengguna.destroy', $admin->id) }}" method="POST" onsubmit="return confirm('Yakin hapus admin ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
-                                    🗑 Delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+
+            <div class="table-container">
+                <table class="w-full">
+                    <thead class="table-header">
+                        <tr>
+                            <th>Nama Pengguna</th>
+                            <th>Alamat Email</th>
+                            <th>Role</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($users as $user)
+                        <tr class="table-row">
+                            <td class="table-cell">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                        <span class="text-blue-600 font-medium text-sm">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                                    </div>
+                                    <span class="font-medium text-gray-900">{{ $user->name }}</span>
+                                </div>
+                            </td>
+                            <td class="table-cell">{{ $user->email }}</td>
+                            <td class="table-cell">
+                                <span class="role-badge {{ $user->role }}">
+                                    <i class="fas fa-circle mr-1" style="font-size: 0.5rem;"></i>
+                                    {{ ucfirst($user->role) }}
+                                </span>
+                            </td>
+                            <td class="table-cell">
+                                <div class="action-buttons">
+                                    <a href="{{ route('pengguna.edit', $user->id) }}" class="edit-btn">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('pengguna.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus pengguna ini?')" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="delete-btn">
+                                            <i class="fas fa-trash"></i>
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Admin Section -->
+        <div id="contentAdmin" class="content-section card">
+            <div class="section-header p-6 border-b border-gray-100">
+                <div>
+                    <h2 class="section-title">Daftar Administrator</h2>
+                    <p class="text-sm text-gray-500 mt-1">Kelola administrator yang memiliki akses penuh ke sistem</p>
+                </div>
+                <a href="{{ route('pengguna.create') }}" class="add-btn">
+                    <i class="fas fa-plus"></i>
+                    Tambah Administrator
+                </a>
+            </div>
+
+            <div class="table-container">
+                <table class="w-full">
+                    <thead class="table-header">
+                        <tr>
+                            <th>Nama Administrator</th>
+                            <th>Alamat Email</th>
+                            <th>Role</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($admins as $admin)
+                        <tr class="table-row">
+                            <td class="table-cell">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                        <span class="text-purple-600 font-medium text-sm">{{ strtoupper(substr($admin->name, 0, 1)) }}</span>
+                                    </div>
+                                    <span class="font-medium text-gray-900">{{ $admin->name }}</span>
+                                </div>
+                            </td>
+                            <td class="table-cell">{{ $admin->email }}</td>
+                            <td class="table-cell">
+                                <span class="role-badge {{ $admin->role }}">
+                                    <i class="fas fa-circle mr-1" style="font-size: 0.5rem;"></i>
+                                    {{ ucfirst($admin->role) }}
+                                </span>
+                            </td>
+                            <td class="table-cell">
+                                <div class="action-buttons">
+                                    <a href="{{ route('pengguna.edit', $admin->id) }}" class="edit-btn">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('pengguna.destroy', $admin->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus administrator ini?')" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="delete-btn">
+                                            <i class="fas fa-trash"></i>
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script>
+        // Tab functionality
         const tabUser = document.getElementById('tabUser');
         const tabAdmin = document.getElementById('tabAdmin');
         const contentUser = document.getElementById('contentUser');
         const contentAdmin = document.getElementById('contentAdmin');
 
-        tabUser.addEventListener('click', () => {
-            tabUser.classList.add('bg-blue-600', 'text-white');
-            tabUser.classList.remove('bg-gray-300');
-            tabAdmin.classList.remove('bg-blue-600', 'text-white');
-            tabAdmin.classList.add('bg-gray-300');
+        function switchTab(activeTab, inactiveTab, activeContent, inactiveContent) {
+            // Update tab styles
+            activeTab.classList.add('active');
+            inactiveTab.classList.remove('active');
 
-            contentUser.classList.remove('hidden');
-            contentAdmin.classList.add('hidden');
+            // Update content visibility with animation
+            inactiveContent.classList.remove('active');
+            setTimeout(() => {
+                activeContent.classList.add('active');
+                activeContent.classList.add('fade-in');
+                setTimeout(() => {
+                    activeContent.classList.remove('fade-in');
+                }, 500);
+            }, 150);
+        }
+
+        tabUser.addEventListener('click', () => {
+            switchTab(tabUser, tabAdmin, contentUser, contentAdmin);
         });
 
         tabAdmin.addEventListener('click', () => {
-            tabAdmin.classList.add('bg-blue-600', 'text-white');
-            tabAdmin.classList.remove('bg-gray-300');
-            tabUser.classList.remove('bg-blue-600', 'text-white');
-            tabUser.classList.add('bg-gray-300');
+            switchTab(tabAdmin, tabUser, contentAdmin, contentUser);
+        });
 
-            contentAdmin.classList.remove('hidden');
-            contentUser.classList.add('hidden');
+        // Enhanced delete confirmation
+        document.querySelectorAll('form[method="POST"]').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const isAdmin = this.querySelector('button').textContent.includes('administrator');
+                const userType = isAdmin ? 'administrator' : 'pengguna';
+
+                if (confirm(`Apakah Anda yakin ingin menghapus ${userType} ini? Tindakan ini tidak dapat dibatalkan.`)) {
+                    this.submit();
+                }
+            });
+        });
+
+        // Add hover effects to table rows
+        document.querySelectorAll('.table-row').forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(2px)';
+            });
+
+            row.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
         });
     </script>
-
 </body>
 </html>

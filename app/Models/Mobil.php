@@ -28,4 +28,8 @@ class Mobil extends Model
     {
         return $this->belongsTo(Tipe::class);
     }
+    public function pembayaran()
+    {
+        return $this->hasMany(PembayaranMobil::class, 'mobil_id');
+    }
 }
